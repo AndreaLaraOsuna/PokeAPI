@@ -1,5 +1,6 @@
 package lara.carmen.PokeAPI.controller;
 
+import jakarta.validation.Valid;
 import lara.carmen.PokeAPI.model.Pokemon;
 import lara.carmen.PokeAPI.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class PokemonController {
 
     // Obtener por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Pokemon> detallePokemon(@PathVariable Long id) {
+    public ResponseEntity<Pokemon> detallePokemon(@Valid @PathVariable Long id) {
         Pokemon pokemon = pokemonService.obtenerPokemonPorId(id);
         if (pokemon == null) {
             return ResponseEntity.notFound().build();
@@ -38,7 +39,7 @@ public class PokemonController {
 
     // Crear
     @PostMapping
-    public ResponseEntity<Pokemon> guardarPokemon(@RequestBody Pokemon pokemon) {
+    public ResponseEntity<Pokemon> guardarPokemon(@Valid @RequestBody Pokemon pokemon) {
         pokemon.setId(null); // fuerza a que sea un registro nuevo
         Pokemon nuevoPokemon = pokemonService.guardarPokemon(pokemon);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPokemon);
@@ -46,7 +47,7 @@ public class PokemonController {
 
     // Actualizar completo (PUT)
     @PutMapping("/{id}")
-    public ResponseEntity<Pokemon> actualizarPokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
+    public ResponseEntity<Pokemon> actualizarPokemon(@PathVariable Long id, @Valid @RequestBody Pokemon pokemon) {
         Pokemon actualizado = pokemonService.actualizarCompleto(id, pokemon);
         if (actualizado == null) {
             return ResponseEntity.notFound().build();
