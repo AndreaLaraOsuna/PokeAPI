@@ -1,5 +1,6 @@
 package lara.carmen.PokeAPI.service;
 
+import lara.carmen.PokeAPI.exception.ResourceNotFoundException;
 import lara.carmen.PokeAPI.model.Pokemon;
 import lara.carmen.PokeAPI.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class PokemonService {
     }
 
     public Pokemon obtenerPokemonPorId(Long id) {
+        if (!pokemonRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Pokemon no encontrado "+id);
+        }
         return pokemonRepository.findById(id).orElse(null);
     }
 
@@ -31,6 +35,9 @@ public class PokemonService {
 
     // PUT: reemplaza todos los atributos
     public Pokemon actualizarCompleto(Long id, Pokemon nuevo) {
+        if (!pokemonRepository.existsById(id)) {
+            throw new ResourceNotFoundException("No se puede actualizar, pokemon no encontrado "+id);
+        }
         Pokemon existente = obtenerPokemonPorId(id);
         if (existente == null) {
             return null;
@@ -47,6 +54,9 @@ public class PokemonService {
 
     // PATCH: actualiza solo los atributos que se enviaron (no nulos)
     public Pokemon actualizarParcial(Long id, Pokemon cambios) {
+        if (!pokemonRepository.existsById(id)) {
+            throw new ResourceNotFoundException("No se puede actualizar, pokemon no encontrado "+id);
+        }
         Pokemon existente = obtenerPokemonPorId(id);
         if (existente == null) {
             return null;
@@ -62,6 +72,10 @@ public class PokemonService {
     }
 
     public void eliminarPokemon(Long id) {
+        if (!pokemonRepository.existsById(id)) {
+            throw new ResourceNotFoundException("No se puede eliminar, pokemon no encontrado "+id);
+        }
+
         pokemonRepository.deleteById(id);
     }
 }
