@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UserPermission {
 
-    String mail;
+    String email;
     String role;
 }

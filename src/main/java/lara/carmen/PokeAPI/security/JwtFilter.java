@@ -49,13 +49,13 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         UserPermission user =  jwtService.extractUser(token);
-        request.setAttribute("user", user.getMail());
+        request.setAttribute("user", user.getEmail());
         request.setAttribute("role", user.getRole());
 
         filterChain.doFilter(request, response);
     }
 
-    private void sendUnauthorized(HttpServletResponse response, String mensaje) {
+    private void sendUnauthorized(HttpServletResponse response, String mensaje) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

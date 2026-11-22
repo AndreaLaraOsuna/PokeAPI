@@ -47,7 +47,7 @@ public class JwtService {
                 .getPayload();
 
         UserPermission user = new UserPermission();
-        user.setMail(claims.getSubject());
+        user.setEmail(claims.getSubject());
         user.setRole(claims.get("role").toString());
 
         return user;
